@@ -1,14 +1,18 @@
 import React from "react";
 
-function TodoList({ todos }) {
-  if (!todos.length) {
-    return null;
+function TodoList({ error, isLoading, data }) {
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
   }
 
   return (
     <>
-      {todos.map((todo) => (
-        <p key={todo.id}>{todo.title}</p>
+      {data?.map((todo) => (
+        <li key={todo.id}>{todo.title}</li>
       ))}
     </>
   );
