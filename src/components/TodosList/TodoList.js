@@ -1,15 +1,11 @@
 import React from "react";
 
-function TodoList({ todos }) {
-  if (!todos.length) {
-    return null;
-  }
-
+function TodoList() {
   return (
     <>
-      {todos.map((todo) => (
+      {/* {todos.map((todo) => (
         <p key={todo.id}>{todo.title}</p>
-      ))}
+      ))} */}
     </>
   );
 }
