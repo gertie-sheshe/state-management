@@ -24,7 +24,9 @@ function App() {
       <h1>Todos</h1>
       <main>
         <Users handleSelectChange={handleSelectChange} {...users} />
-        <TodoList {...todos} />
+
+        {/* these will re-render when the user changes. Unnecessary rerender */}
+        <TodoList userId={userId} {...todos} />
         <TodoForm userId={userId} />
       </main>
     </div>

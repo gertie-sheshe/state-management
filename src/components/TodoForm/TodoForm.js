@@ -32,7 +32,6 @@ function TodoForm({ userId }) {
   const handleOnChange = (e) => {
     e.preventDefault();
     setTodo(e.target.value);
-    console.log("TODO CHANGE");
   };
 
   return (
@@ -52,6 +51,8 @@ function TodoForm({ userId }) {
           Add
         </button>
       </form>
+      {addTodoMutation.error && <p>Error: {addTodoMutation.error}</p>}
+      {addTodoMutation.isLoading && <p>Adding Todo...</p>}
     </div>
   );
 }
