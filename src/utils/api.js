@@ -23,7 +23,7 @@ export const getUserTodos = (userId) => {
   return apiRequest(`${API_URL}/users/${userId}/todos`);
 };
 
-export const updateTodo = (todoId, data) => {
+export const updateTodo = (data, todoId) => {
   return apiRequest(`${API_URL}/todos/${todoId}`, {
     method: "PUT",
     headers: HEADERS,
