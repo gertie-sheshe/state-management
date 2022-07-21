@@ -1,9 +1,9 @@
 import { render } from "../../tests/utils";
-import App from "./App";
+import Users from "./Users";
 
-describe("App", () => {
+describe("Users", () => {
   test("Matches snapshot", () => {
-    const { asFragment } = render(<App />);
+    const { asFragment } = render(<Users />);
     expect(asFragment()).toMatchSnapshot();
   });
 });

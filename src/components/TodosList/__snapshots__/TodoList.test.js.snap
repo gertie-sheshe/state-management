@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoList matches snapshot 1`] = `
+<DocumentFragment>
+  <form>
+    <ul
+      style="list-style-type: none;"
+    >
+      <li>
+        <input
+          id="13"
+          type="checkbox"
+        />
+        <label
+          for="13"
+        >
+          et doloremque nulla
+        </label>
+      </li>
+      <li>
+        <input
+          id="14"
+          type="checkbox"
+        />
+        <label
+          for="14"
+        >
+          home alone
+        </label>
+      </li>
+    </ul>
+  </form>
+</DocumentFragment>
+`;
