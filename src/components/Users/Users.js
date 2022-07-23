@@ -3,10 +3,10 @@ import { useQuery } from "react-query";
 import { getUsers } from "../../utils/api";
 
 function Users({ handleSelectChange }) {
-  const { data, error, isLoading } = useQuery("users", getUsers);
+  const { data, isLoading, isError } = useQuery("users", getUsers);
 
-  if (error) {
-    return <p>Error: {error}</p>;
+  if (isError) {
+    return <p>Error: {isError}</p>;
   }
 
   if (isLoading) {

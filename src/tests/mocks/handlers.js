@@ -3,6 +3,7 @@ const API_URL = "http://localhost:3000";
 
 const fetchUsers = rest.get(`${API_URL}/users`, (req, res, ctx) => {
   return res(
+    ctx.status(200),
     ctx.json([
       {
         id: 1,

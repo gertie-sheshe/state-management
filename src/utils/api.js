@@ -6,6 +6,10 @@ const HEADERS = {
 
 export const apiRequest = async (url, options) => {
   const result = await fetch(url, options);
+
+  if (!result.ok) {
+    throw new Error(result.error);
+  }
   const data = await result.json();
 
   return data;

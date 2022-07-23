@@ -3,7 +3,18 @@ import { render } from "@testing-library/react";
 
 function ProviderWrapper({ children }) {
   return (
-    <QueryClientProvider client={new QueryClient()}>
+    <QueryClientProvider
+      client={
+        new QueryClient({
+          defaultOptions: {
+            queries: {
+              retryDelay: 1,
+              retry: 0,
+            },
+          },
+        })
+      }
+    >
       {children}
     </QueryClientProvider>
   );
