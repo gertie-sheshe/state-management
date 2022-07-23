@@ -32,6 +32,15 @@ const fetchUsers = rest.get(`${API_URL}/users`, (req, res, ctx) => {
   );
 });
 
+export const fetchUsersError = rest.get(`${API_URL}/users`, (req, res, ctx) => {
+  return res(
+    ctx.status(500),
+    ctx.json({
+      error: "Internal server error",
+    })
+  );
+});
+
 const fetchUsersTodos = rest.get(
   `${API_URL}/users/:id/todos`,
   (req, res, ctx) => {
