@@ -4,9 +4,12 @@ exports[`Todo matches snapshot 1`] = `
 <DocumentFragment>
   <li>
     <input
+      id="1"
       type="checkbox"
     />
-    <label>
+    <label
+      for="1"
+    >
       test
     </label>
   </li>
