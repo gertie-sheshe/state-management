@@ -1,16 +1,21 @@
 import { render } from "../../tests/utils";
-// import { QueryClient } from "react-query";
 import Users from "./Users";
 import { screen } from "@testing-library/react";
 import { worker } from "../../tests/mocks/server";
 import { fetchUsersError } from "../../tests/mocks/handlers";
+import { queryClient } from "../../tests/utils.js";
 
 describe("Users", () => {
-  beforeAll(() => worker.listen());
+  beforeAll(() => worker.listen({ onUnhandledRequest: "warn" }));
+  beforeEach(() => queryClient.clear());
   afterEach(() => {
     worker.resetHandlers();
+    queryClient.clear();
   });
-  afterAll(() => worker.close());
+  afterAll(() => {
+    worker.close();
+    queryClient.clear();
+  });
 
   test("Matches snapshot", () => {
     const { asFragment } = render(<Users />);
@@ -22,15 +27,19 @@ describe("Users", () => {
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  test("Shows error state", async () => {
-    worker.use("http://localhost:3000/users", fetchUsersError);
-    render(<Users />);
-    expect(await screen.findByText("Error:")).toBeInTheDocument();
-  });
-
   test("Shows users", async () => {
     render(<Users />);
     expect(screen.getByText("Loading...")).toBeInTheDocument();
     await screen.findByText("Select User");
   });
+
+  test("Shows error state", async () => {
+    worker.use("http://localhost:3000/users", fetchUsersError);
+    render(<Users />);
+    expect(await screen.findByText("Error:")).toBeInTheDocument();
+  });
 });
+
+/// https://github.com/mswjs/msw/issues/251
+// https://github.com/TanStack/query/discussions/1441
+// Look into the caching and request interception - currently it's not working
