@@ -83,4 +83,11 @@ const fetchUsersTodos = rest.get(
   }
 );
 
-export const handlers = [fetchUsersTodos, fetchUsers];
+const fetchUsersNoTodos = rest.get(
+  `${API_URL}/users/:id/todos`,
+  (req, res, ctx) => {
+    return res(ctx.json([{ title: "No todos", completed: false }]));
+  }
+);
+
+export const handlers = [fetchUsersTodos, fetchUsersNoTodos, fetchUsers];

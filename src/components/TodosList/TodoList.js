@@ -17,6 +17,7 @@ function TodoList({ error, isLoading, data }) {
           <Todo key={todo.id} todo={todo} />
         ))}
       </ul>
+      {data?.length === 0 && <p>No todos found</p>}
     </form>
   );
 }

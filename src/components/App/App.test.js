@@ -3,6 +3,8 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { worker } from "../../tests/mocks/server";
 import { queryClient } from "../../tests/utils.js";
+import { fetchUsersError, fetchUsersNoTodos } from "../../tests/mocks/handlers";
+
 import App from "./App";
 
 describe("App", () => {
@@ -10,6 +12,7 @@ describe("App", () => {
   beforeEach(() => queryClient.clear());
   afterEach(() => {
     worker.resetHandlers();
+    queryClient.clear();
   });
   afterAll(() => {
     worker.close();
@@ -58,7 +61,7 @@ describe("App", () => {
     });
   });
 
-  test("Should enable add Todo button when a user is selected", async () => {
+  test("Should enable Add Todo button when a user is selected", async () => {
     render(<App />);
     expect(await screen.findByText("Select User")).toBeInTheDocument();
     userEvent.selectOptions(screen.getByRole("combobox"), "2");
@@ -68,10 +71,51 @@ describe("App", () => {
     });
   });
 
-  // test("Should allow user to select users", async () => {
+  test("Should disable Add Todo button when a user is not selected", async () => {
+    render(<App />);
+    expect(await screen.findByText("Select User")).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Add" }).disabled).toBe(true);
+    });
+  });
+
+  test("Should show error message when fetch users fails", async () => {
+    worker.use("http://localhost:3000/users", fetchUsersError);
+    render(<App />);
+    expect(await screen.findByText("Error:")).toBeInTheDocument();
+  });
+
+  test("Should show list of todos when a user is selected", async () => {
+    render(<App />);
+    expect(await screen.findByText("Select User")).toBeInTheDocument();
+    userEvent.selectOptions(screen.getByRole("combobox"), "2");
+
+    await waitFor(() => {
+      expect(screen.getByText("delectus aut autem")).toBeInTheDocument();
+    });
+
+    expect(
+      screen.getByText(
+        "laboriosam mollitia et enim quasi adipisci quia provident illum"
+      )
+    ).toBeInTheDocument();
+    expect(screen.getByText("molestiae perspiciatis ipsa")).toBeInTheDocument();
+    expect(screen.getByText("et doloremque nulla")).toBeInTheDocument();
+    expect(screen.getByText("home alone")).toBeInTheDocument();
+  });
+
+  // test("Should show no todos when a user is selected and has no todos", async () => {
+  //   // worker.use("http://localhost:3000/users/:id/todos", fetchUsersNoTodos);
   //   render(<App />);
   //   expect(await screen.findByText("Select User")).toBeInTheDocument();
-  //   userEvent.selectOptions(screen.getByRole("combobox"), "1");
-  //   // expect(screen.getByRole("button")).toBeDisabled();
+
+  //   worker.use("http://localhost:3000/users/4/todos", fetchUsersNoTodos);
+
+  //   userEvent.selectOptions(screen.getByRole("combobox"), "4");
+
+  //   await waitFor(() => {
+  //     expect(screen.getByText("No todos")).toBeInTheDocument();
+  //   });
   // });
 });
