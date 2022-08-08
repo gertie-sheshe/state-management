@@ -2,7 +2,6 @@ import { rest } from "msw";
 const API_URL = "http://localhost:3000";
 
 const fetchUsers = rest.get(`${API_URL}/users`, (req, res, ctx) => {
-  console.log("TEEEEESTTTTT");
   return res(
     ctx.status(200),
     ctx.json([
@@ -35,7 +34,6 @@ const fetchUsers = rest.get(`${API_URL}/users`, (req, res, ctx) => {
 });
 
 export const fetchUsersError = rest.get(`${API_URL}/users`, (req, res, ctx) => {
-  console.log("ALAAAAAAAAA");
   return res(
     ctx.status(500),
     ctx.json({

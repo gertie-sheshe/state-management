@@ -15,12 +15,12 @@ describe("TodoForm", () => {
 
   it("shows disabled button when userId is not provided", () => {
     render(<TodoForm />);
-    expect(screen.getByRole("button").disabled).toBe(true);
+    expect(screen.getByRole("button", { name: "Add" }).disabled).toBe(true);
   });
 
   it("shows enabled button when userId is provided", () => {
     render(<TodoForm userId={1} />);
-    expect(screen.getByRole("button").disabled).toBe(false);
+    expect(screen.getByRole("button", { name: "Add" }).disabled).toBe(false);
   });
 
   it("shows disabled input field when userId is not provided", () => {

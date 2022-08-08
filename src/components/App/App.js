@@ -7,7 +7,7 @@ import TodoForm from "../TodoForm";
 import "./App.css";
 
 function App() {
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(null); // move to context?
 
   const todos = useQuery(["userTodos", userId], () => getUserTodos(userId), {
     enabled: userId !== null,
