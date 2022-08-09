@@ -34,7 +34,7 @@ describe("Users", () => {
   });
 
   test("Shows error state", async () => {
-    worker.use("http://localhost:3000/users", fetchUsersError);
+    worker.use(fetchUsersError);
     render(<Users />);
     expect(await screen.findByText("Error:")).toBeInTheDocument();
   });

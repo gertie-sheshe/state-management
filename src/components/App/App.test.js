@@ -9,7 +9,6 @@ import App from "./App";
 
 describe("App", () => {
   beforeAll(() => worker.listen({ onUnhandledRequest: "warn" }));
-  beforeEach(() => queryClient.clear());
   afterEach(() => {
     worker.resetHandlers();
     queryClient.clear();
@@ -81,7 +80,7 @@ describe("App", () => {
   });
 
   test("Should show error message when fetch users fails", async () => {
-    worker.use("http://localhost:3000/users", fetchUsersError);
+    worker.use(fetchUsersError);
     render(<App />);
     expect(await screen.findByText("Error:")).toBeInTheDocument();
   });
@@ -105,17 +104,14 @@ describe("App", () => {
     expect(screen.getByText("home alone")).toBeInTheDocument();
   });
 
-  // test("Should show no todos when a user is selected and has no todos", async () => {
-  //   // worker.use("http://localhost:3000/users/:id/todos", fetchUsersNoTodos);
-  //   render(<App />);
-  //   expect(await screen.findByText("Select User")).toBeInTheDocument();
+  test("Should show no todos when a user is selected and has no todos", async () => {
+    worker.use(fetchUsersNoTodos);
+    render(<App />);
+    expect(await screen.findByText("Select User")).toBeInTheDocument();
+    userEvent.selectOptions(screen.getByRole("combobox"), "4");
 
-  //   worker.use("http://localhost:3000/users/4/todos", fetchUsersNoTodos);
-
-  //   userEvent.selectOptions(screen.getByRole("combobox"), "4");
-
-  //   await waitFor(() => {
-  //     expect(screen.getByText("No todos")).toBeInTheDocument();
-  //   });
-  // });
+    await waitFor(() => {
+      expect(screen.getByText("No todos found")).toBeInTheDocument();
+    });
+  });
 });

@@ -33,15 +33,6 @@ const fetchUsers = rest.get(`${API_URL}/users`, (req, res, ctx) => {
   );
 });
 
-export const fetchUsersError = rest.get(`${API_URL}/users`, (req, res, ctx) => {
-  return res(
-    ctx.status(500),
-    ctx.json({
-      error: "Internal server error",
-    })
-  );
-});
-
 const fetchUsersTodos = rest.get(
   `${API_URL}/users/:id/todos`,
   (req, res, ctx) => {
@@ -83,11 +74,22 @@ const fetchUsersTodos = rest.get(
   }
 );
 
-const fetchUsersNoTodos = rest.get(
+// Handlers for tests
+
+export const fetchUsersError = rest.get(`${API_URL}/users`, (req, res, ctx) => {
+  return res(
+    ctx.status(500),
+    ctx.json({
+      error: "Internal server error",
+    })
+  );
+});
+
+export const fetchUsersNoTodos = rest.get(
   `${API_URL}/users/:id/todos`,
   (req, res, ctx) => {
-    return res(ctx.json([{ title: "No todos", completed: false }]));
+    return res(ctx.json([]));
   }
 );
 
-export const handlers = [fetchUsersTodos, fetchUsersNoTodos, fetchUsers];
+export const handlers = [fetchUsers, fetchUsersTodos];
