@@ -1,18 +1,18 @@
 import { render } from "../../tests/utils";
 import Users from "./Users";
 import { screen } from "@testing-library/react";
-import { worker } from "../../tests/mocks/server";
+import { server } from "../../tests/mocks/server";
 import { fetchUsersError } from "../../tests/mocks/handlers";
 import { queryClient } from "../../tests/utils.js";
 
 describe("Users", () => {
-  beforeAll(() => worker.listen({ onUnhandledRequest: "warn" }));
+  beforeAll(() => server.listen({ onUnhandledRequest: "warn" }));
   beforeEach(() => queryClient.clear());
   afterEach(() => {
-    worker.resetHandlers();
+    server.resetHandlers();
   });
   afterAll(() => {
-    worker.close();
+    server.close();
   });
 
   test("Matches snapshot", () => {
@@ -32,7 +32,7 @@ describe("Users", () => {
   });
 
   test("Shows error state", async () => {
-    worker.use(fetchUsersError);
+    server.use(fetchUsersError);
     render(<Users />);
     expect(await screen.findByText("Error:")).toBeInTheDocument();
   });

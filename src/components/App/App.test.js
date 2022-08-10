@@ -1,20 +1,20 @@
 import { render } from "../../tests/utils";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { worker } from "../../tests/mocks/server";
+import { server } from "../../tests/mocks/server";
 import { queryClient } from "../../tests/utils.js";
 import { fetchUsersError, fetchUsersNoTodos } from "../../tests/mocks/handlers";
 
 import App from "./App";
 
 describe("App", () => {
-  beforeAll(() => worker.listen({ onUnhandledRequest: "warn" }));
+  beforeAll(() => server.listen({ onUnhandledRequest: "warn" }));
   afterEach(() => {
-    worker.resetHandlers();
+    server.resetHandlers();
     queryClient.clear();
   });
   afterAll(() => {
-    worker.close();
+    server.close();
   });
   test("Matches snapshot", () => {
     const { asFragment } = render(<App />);
@@ -80,7 +80,7 @@ describe("App", () => {
   });
 
   test("Should show error message when fetch users fails", async () => {
-    worker.use(fetchUsersError);
+    server.use(fetchUsersError);
     render(<App />);
     expect(await screen.findByText("Error:")).toBeInTheDocument();
   });
@@ -105,7 +105,7 @@ describe("App", () => {
   });
 
   test("Should show no todos when a user is selected and has no todos", async () => {
-    worker.use(fetchUsersNoTodos);
+    server.use(fetchUsersNoTodos);
     render(<App />);
     expect(await screen.findByText("Select User")).toBeInTheDocument();
     userEvent.selectOptions(screen.getByRole("combobox"), "4");
