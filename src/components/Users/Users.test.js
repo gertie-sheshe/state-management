@@ -10,11 +10,9 @@ describe("Users", () => {
   beforeEach(() => queryClient.clear());
   afterEach(() => {
     worker.resetHandlers();
-    queryClient.clear();
   });
   afterAll(() => {
     worker.close();
-    queryClient.clear();
   });
 
   test("Matches snapshot", () => {
